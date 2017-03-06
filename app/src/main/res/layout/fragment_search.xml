@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:background="@color/colorPrimary"
+    >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:id="@+id/sv_search" />
+
+        <Switch
+            android:layout_weight="0.7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sw_switcher"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:text="Movie"
+            android:textSize="12sp"
+            android:textStyle="normal|bold" />
+
+    </LinearLayout>
+
+</LinearLayout>

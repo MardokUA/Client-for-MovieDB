@@ -1,0 +1,249 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:context="laktionov.filmsraiting.fragment.MovieDetailsFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+
+
+
+        <LinearLayout
+            android:id="@+id/another_info"
+            android:layout_below="@+id/poster_title"
+            android:layout_marginTop="50dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="Number of seasons:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="normal|bold|italic"
+                android:textAllCaps="false" />
+
+            <TextView
+                android:text="seasons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_tvshow_seasons"
+                android:textSize="18sp" />
+
+            <TextView
+                android:text="Number of episodes:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="normal|bold|italic" />
+
+            <TextView
+                android:text="episodes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:id="@+id/tv_tvshow_episodes" />
+
+            <TextView
+                android:text="Last episode date:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="normal|bold|italic" />
+
+            <TextView
+                android:text="episodes dates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_tvshow_episodesDates"
+                android:textSize="18sp" />
+
+            <TextView
+                android:text="Homepage:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+
+                android:textStyle="normal|bold|italic" />
+
+            <TextView
+                android:text="homepage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_tvshow_homepage"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:textColorLink="@color/colorPrimary"
+                android:textSize="18sp" />
+
+            <TextView
+                android:text="Original language:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="normal|bold|italic" />
+
+            <TextView
+                android:text="original language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_tvshow_originalLanguage"
+                android:textSize="18sp" />
+
+            <TextView
+                android:text="Popularity:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="normal|bold|italic" />
+
+            <TextView
+                android:text="popularity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_tvshow_popularity"
+                android:textSize="18sp" />
+
+            <TextView
+                android:text="Status:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="normal|bold|italic" />
+
+            <TextView
+                android:text="status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_tvshow_status"
+                android:textSize="18sp" />
+
+            <TextView
+                android:text="Vote count:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="normal|bold|italic" />
+
+            <TextView
+                android:text="vote count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_tvshow_voteCount"
+                android:textSize="18sp" />
+
+            <TextView
+                android:text="Overview:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="normal|bold|italic" />
+
+            <TextView
+                android:text="overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_tvshow_overview"
+                android:textSize="18sp" />
+
+            <TextView
+                android:text="Video:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="normal|bold|italic" />
+
+            <VideoView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/vv_tvshow_video" />
+
+        </LinearLayout>
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/poster_title"
+            android:layout_centerHorizontal="true"
+            android:clickable="false"
+            android:id="@+id/rb_tvshow" />
+
+        <LinearLayout
+            android:id="@+id/poster_title"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@mipmap/ic_launcher"
+                android:id="@+id/img_tvshow_posterPath"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:padding="5dp"
+                android:layout_weight="0.55" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.45">
+
+                <TextView
+                    android:text="original name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_tvshow_originalName"
+                    android:textAlignment="center"
+                    android:textStyle="normal|bold"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:text="name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_tvshow_name"
+                    android:textAlignment="viewStart"
+                    android:textStyle="normal|italic"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:text="first air date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_tvshow_firstAirDate"
+                    android:textAlignment="viewStart"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:text="original country"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_tvshow_originalCountry"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:text="vote average"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_tvshow_voteAverage"
+                    android:textAlignment="viewStart"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

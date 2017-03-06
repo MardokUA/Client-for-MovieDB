@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_films"
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Films" >
+        <menu >
+            <group  android:checkableBehavior="single">
+                <item android:title="Popular"
+                    android:id="@+id/nav_films_popular"
+                    android:icon="@drawable/movie" />
+                <item android:title="Top Rated"
+                    android:id="@+id/nav_films_toprated"
+                    android:icon="@drawable/top_rated" />
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/nav_tvShows"
+        android:icon="@drawable/ic_menu_gallery"
+        android:title="TV Shows" >
+        <menu >
+            <group android:checkableBehavior="single">
+                <item android:title="Popular"
+                    android:id="@+id/nav_tvShow_popular"
+                    android:icon="@drawable/tv_show" />
+                <item android:title="Top Rated"
+                    android:id="@+id/nav_tvShow_toprated"
+                    android:icon="@drawable/top_rated" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="Favorites"
+        android:id="@+id/nav_favorites"
+        android:icon="@drawable/favorites" />
+    <item android:title="About"
+        android:id="@+id/nav_about"
+        android:icon="@drawable/about" />
+
+</menu>
