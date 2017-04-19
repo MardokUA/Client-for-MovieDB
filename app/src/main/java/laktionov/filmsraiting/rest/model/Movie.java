@@ -1,33 +1,54 @@
-package laktionov.filmsraiting.model;
+package laktionov.filmsraiting.rest.model;
+
+import com.google.gson.annotations.Expose;
 
 import laktionov.filmsraiting.extras.Film;
 
 public class Movie extends Film {
-
     //Movie details...
+    @Expose
     private String original_language;
+    @Expose
     private String title;
+    @Expose
     private String release_date;
+    @Expose
     private Integer vote_count;
+    @Expose
     private Integer runtime;
+    @Expose
     private Double vote_average;
+    @Expose
     private String tagline;
+    @Expose
     private String status;
 
     //TVShow details...
+    @Expose
     private String last_air_date;
+    @Expose
     private String first_air_date;
+    @Expose
     private String name;
+    @Expose
     private Integer number_of_episodes;
+    @Expose
     private Integer number_of_seasons;
+    @Expose
     private String[] origin_country;
 
     //Shared details...
+    @Expose
     private Integer budget;
+    @Expose
     private String homepage;
+    @Expose
     private String overview;
+    @Expose
     private Double popularity;
+    @Expose
     private Integer revenue;
+    @Expose
     private boolean video;
 
     public String getName() {

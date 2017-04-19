@@ -2,34 +2,24 @@ package laktionov.filmsraiting.fragment;
 
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -45,31 +35,25 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import laktionov.filmsraiting.BuildConfig;
 import laktionov.filmsraiting.R;
 import laktionov.filmsraiting.extras.DownloadVideoAsyncTask;
 import laktionov.filmsraiting.extras.Film;
-import laktionov.filmsraiting.model.Movie;
-import laktionov.filmsraiting.model.Video;
+import laktionov.filmsraiting.rest.BaseApi;
+import laktionov.filmsraiting.rest.model.Movie;
+import laktionov.filmsraiting.rest.model.Video;
 import laktionov.filmsraiting.provider.FavoritesProvider;
 import laktionov.filmsraiting.provider.FilmsContract;
 
 import static android.content.ContentValues.TAG;
-import static com.google.android.youtube.player.YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE;
-import static com.google.android.youtube.player.YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MovieDetailsFragment extends Fragment implements View.OnClickListener {
 
-    public static final String API_URL_BASE = "https://api.themoviedb.org/3";
-    public static final String API_URL_MOVIE_DETAILS = "/movie/";
-    public static final String API_URL_IMAGE = "https://image.tmdb.org/t/p/w500";
     private static final String LOG_TAG = "........";
-    public static final String YOUTUBE_API_KEY = "AIzaSyCGYuB2079ufCin7-07tesMQ8QydFv7axA";
 
     private ArrayList<Video> videoList;
     private Film film;
@@ -121,7 +105,7 @@ public class MovieDetailsFragment extends Fragment implements View.OnClickListen
         Log.d(TAG, "EXECUTING 1");
         try {
 
-            URL film_url = new URL(API_URL_BASE + API_URL_MOVIE_DETAILS + film_id + "?api_key=" + BuildConfig.THE_MOVIEDB_API_KEY + "&language=en-US&page=1");
+            URL film_url = new URL(BaseApi.API_URL_BASE + "/3" + BaseApi.API_URL_MOVIE_DETAILS + film_id + "?api_key=" + BuildConfig.THE_MOVIEDB_API_KEY + "&language=en-US&page=1");
             new DetailsDownloaderAsyncTask().execute(film_url);
 
         } catch (MalformedURLException e) {
@@ -161,7 +145,7 @@ public class MovieDetailsFragment extends Fragment implements View.OnClickListen
         }
         film_youtube_fragment = (RelativeLayout) root.findViewById(R.id.film_youtube_fragment);
         youtubeFragment = YouTubePlayerSupportFragment.newInstance();
-        youtubeFragment.initialize(YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
+        youtubeFragment.initialize(BuildConfig.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
                 if (!wasRestored) {
@@ -278,7 +262,7 @@ public class MovieDetailsFragment extends Fragment implements View.OnClickListen
             if (movie.getPoster_path() == null) {
                 img_film_poster.setImageResource(R.drawable.no_image_avavailable);
             } else {
-                Picasso.with(getContext()).load(API_URL_IMAGE + movie.getPoster_path())
+                Picasso.with(getContext()).load(BaseApi.API_URL_IMAGE + movie.getPoster_path())
                         .resize(350, 500)
                         .into(img_film_poster);
             }

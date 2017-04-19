@@ -3,7 +3,6 @@ package laktionov.filmsraiting.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,26 +16,18 @@ import java.util.List;
 
 import laktionov.filmsraiting.BuildConfig;
 import laktionov.filmsraiting.R;
-import laktionov.filmsraiting.adapter.MovieListAdapter;
-import laktionov.filmsraiting.model.Poster;
+import laktionov.filmsraiting.extras.Constans;
+import laktionov.filmsraiting.rest.model.Poster;
 
 
 public class SearchFragment extends Fragment implements CompoundButton.OnCheckedChangeListener, SearchView.OnQueryTextListener {
 
-    public static final String TAG = "LOG";
+    private SearchView searchView;
+    private Switch aSwitch;
 
     private List<Poster> searhList;
-    private MovieListAdapter adapter;
-    private static final String API_URL_BASE = "https://api.themoviedb.org/3";
-    private static final String SEARCH_TV_SHOW = API_URL_BASE + "/search/tv?api_key=" + BuildConfig.THE_MOVIEDB_API_KEY;
-    private static final String SEARCH_MOVIE = API_URL_BASE + "/search/movie?api_key=" + BuildConfig.THE_MOVIEDB_API_KEY;
-    private String searching = API_URL_BASE + "/search/movie?api_key=" + BuildConfig.THE_MOVIEDB_API_KEY;
-    ;
     private String request;
-
-
-    SearchView searchView;
-    Switch aSwitch;
+    private String searchingIn;
 
     public SearchFragment() {
         this.searhList = new ArrayList<>();
@@ -53,7 +44,6 @@ public class SearchFragment extends Fragment implements CompoundButton.OnChecked
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_search, container, false);
-        Log.d(TAG, "FROM SEARCH");
 
         searchView = (SearchView) root.findViewById(R.id.sv_search);
         aSwitch = (Switch) root.findViewById(R.id.sw_switcher);
@@ -72,24 +62,20 @@ public class SearchFragment extends Fragment implements CompoundButton.OnChecked
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
             aSwitch.setText("TV Show");
-            searching = SEARCH_TV_SHOW;
-            Log.d(TAG, "SEARCHING IN : " + searching);
+            searchingIn = Constans.TVSHOW;
 
         } else {
             aSwitch.setText("Movie");
-            searching = SEARCH_MOVIE;
-            Log.d(TAG, "SEARCHING IN : " + searching);
-
+            searchingIn = Constans.MOVIE;
         }
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
-        request = query;
-        Log.d(TAG, "URL = " + searching);
+    public boolean onQueryTextSubmit(String request) {
+        this.request = request;
         Bundle args = new Bundle();
-        args.putString("url", searching);
-        args.putString("request", request);
+        args.putString(Constans.SEARCH_REQUEST, this.request);
+        args.putString(Constans.SEARCHING_IN, searchingIn);
 
         searchView.clearFocus();
 
@@ -108,7 +94,7 @@ public class SearchFragment extends Fragment implements CompoundButton.OnChecked
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_main, fragment)
-                .addToBackStack("SEARCH")
+                .addToBackStack(Constans.SEARCH_FRAGMENT_TO_BACKSTACK)
                 .commit();
 
         return true;

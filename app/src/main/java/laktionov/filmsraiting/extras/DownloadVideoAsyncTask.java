@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import laktionov.filmsraiting.BuildConfig;
-import laktionov.filmsraiting.model.Video;
+import laktionov.filmsraiting.rest.model.Video;
 
 
 public class DownloadVideoAsyncTask extends AsyncTask<Long, Video, ArrayList<Video>> {

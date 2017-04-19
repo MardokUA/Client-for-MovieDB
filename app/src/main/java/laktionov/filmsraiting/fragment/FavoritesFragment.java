@@ -23,7 +23,6 @@ import laktionov.filmsraiting.provider.FavoritesProvider;
 import laktionov.filmsraiting.provider.FilmsContract;
 
 public class FavoritesFragment extends Fragment implements View.OnClickListener {
-    public static final String LOG = ".....";
 
     private FloatingActionButton fab;
     private FavoritesPosterAdapter fAdapter;

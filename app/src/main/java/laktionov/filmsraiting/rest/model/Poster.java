@@ -1,4 +1,4 @@
-package laktionov.filmsraiting.model;
+package laktionov.filmsraiting.rest.model;
 
 
 import laktionov.filmsraiting.extras.Film;

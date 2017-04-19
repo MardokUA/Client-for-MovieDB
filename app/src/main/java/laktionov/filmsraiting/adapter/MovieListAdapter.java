@@ -14,11 +14,10 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import laktionov.filmsraiting.R;
-import laktionov.filmsraiting.model.Poster;
+import laktionov.filmsraiting.rest.BaseApi;
+import laktionov.filmsraiting.rest.model.Poster;
 
 public class MovieListAdapter extends BaseAdapter {
-
-    public static final String API_URL_IMAGE = "https://image.tmdb.org/t/p/w500";
 
     private Context context;
     private List<Poster> posterList;
@@ -62,7 +61,7 @@ public class MovieListAdapter extends BaseAdapter {
             Picasso.with(context)
                     .setIndicatorsEnabled(true);
             Picasso.with(context)
-                    .load(API_URL_IMAGE + poster.getPoster_path())
+                    .load(BaseApi.API_URL_IMAGE + poster.getPoster_path())
                     .resize(500,700)
                     .placeholder(R.drawable.progress_animation)
                     .into(lvPoster);

@@ -2,7 +2,6 @@ package laktionov.filmsraiting.fragment;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,15 +30,12 @@ import java.util.Arrays;
 
 import laktionov.filmsraiting.R;
 import laktionov.filmsraiting.extras.Film;
-import laktionov.filmsraiting.model.Movie;
+import laktionov.filmsraiting.rest.BaseApi;
+import laktionov.filmsraiting.rest.model.Movie;
 import laktionov.filmsraiting.provider.FavoritesProvider;
 import laktionov.filmsraiting.provider.FilmsContract;
 
 public class TVShowDetailsFragment extends Fragment implements View.OnClickListener {
-
-    public static final String API_URL_BASE = "https://api.themoviedb.org/3";
-    public static final String API_URL_TVSHOW_DETAILS = "/tv/";
-    public static final String API_URL_IMAGE = "https://image.tmdb.org/t/p/w500";
 
     private Film film;
     private FloatingActionButton fab;
@@ -123,7 +119,7 @@ public class TVShowDetailsFragment extends Fragment implements View.OnClickListe
     public void onStart() {
 
         try {
-            URL tvshow_url = new URL(API_URL_BASE + API_URL_TVSHOW_DETAILS + tvshow_id + "?api_key=" + laktionov.filmsraiting.BuildConfig.THE_MOVIEDB_API_KEY + "&language=en-US&page=1");
+            URL tvshow_url = new URL(BaseApi.API_URL_BASE + "/3" + BaseApi.API_URL_TVSHOW_DETAILS + tvshow_id + "?api_key=" + laktionov.filmsraiting.BuildConfig.THE_MOVIEDB_API_KEY + "&language=en-US&page=1");
             new DetailsDownloaderAsyncTask().execute(tvshow_url);
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -199,7 +195,7 @@ public class TVShowDetailsFragment extends Fragment implements View.OnClickListe
 
             } else {
 
-                Picasso.with(getContext()).load(API_URL_IMAGE + tvShow.getPoster_path())
+                Picasso.with(getContext()).load(BaseApi.API_URL_IMAGE + tvShow.getPoster_path())
                         .resize(350, 500)
                         .into(img_tvshow_poster);
 

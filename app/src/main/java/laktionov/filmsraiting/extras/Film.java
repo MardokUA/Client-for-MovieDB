@@ -1,10 +1,16 @@
 package laktionov.filmsraiting.extras;
 
+import com.google.gson.annotations.Expose;
+
 public abstract class Film {
 
+    @Expose
     private int id;
+    @Expose
     private String poster_path;
+    @Expose
     private String original_title;
+    @Expose
     private String original_name;
 
     public Film(int id, String poster_path) {

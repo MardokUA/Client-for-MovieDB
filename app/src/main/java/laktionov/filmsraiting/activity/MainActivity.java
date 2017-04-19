@@ -1,6 +1,5 @@
 package laktionov.filmsraiting.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,24 +10,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import laktionov.filmsraiting.R;
+import laktionov.filmsraiting.extras.Constans;
 import laktionov.filmsraiting.fragment.FavoritesFragment;
-import laktionov.filmsraiting.fragment.SearchFragment;
 import laktionov.filmsraiting.fragment.PostersFragment;
+import laktionov.filmsraiting.fragment.SearchFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public final String API_URL_MOVIE_POPULAR = "/movie/popular";
-    public final String API_URL_MOVIE_TOP_RATED = "/movie/top_rated";
-    public final String API_URL_TVSHOW_POPULAR = "/tv/popular";
-    public final String API_URL_TVSHOW_TOP_RATED = "/tv/top_rated";
     public static final String LOG_TAG = "......";
 
     private FloatingActionButton fab;
@@ -37,7 +32,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(LOG_TAG,"ON RESUME");
+        Log.d(LOG_TAG, "ON RESUME");
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setEnabled(false);
         fab.setVisibility(View.INVISIBLE);
@@ -109,9 +104,11 @@ public class MainActivity extends AppCompatActivity
         Bundle args = new Bundle();
         PostersFragment postersFragment = new PostersFragment();
         FragmentManager fr = getSupportFragmentManager();
+
         switch (item.getItemId()) {
             case R.id.nav_films_popular:
-                args.putString("selected_nav", API_URL_MOVIE_POPULAR);
+                args.putString(Constans.MENU_ITEM_SELECTED_IN_DRAWER, Constans.MOVIE);
+                args.putString(Constans.CATEGORY_SELECTED_IN_DRAWER, Constans.POPULAR);
                 postersFragment.setArguments(args);
 
                 fr.beginTransaction()
@@ -120,7 +117,8 @@ public class MainActivity extends AppCompatActivity
                         .commit();
                 break;
             case R.id.nav_films_toprated:
-                args.putString("selected_nav", API_URL_MOVIE_TOP_RATED);
+                args.putString(Constans.MENU_ITEM_SELECTED_IN_DRAWER, Constans.MOVIE);
+                args.putString(Constans.CATEGORY_SELECTED_IN_DRAWER, Constans.TOP_RATED);
                 postersFragment.setArguments(args);
                 fr.beginTransaction()
                         .replace(R.id.content_main, postersFragment, "POSTERS_TAG")
@@ -128,7 +126,8 @@ public class MainActivity extends AppCompatActivity
                         .commit();
                 break;
             case R.id.nav_tvShow_popular:
-                args.putString("selected_nav", API_URL_TVSHOW_POPULAR);
+                args.putString(Constans.MENU_ITEM_SELECTED_IN_DRAWER, Constans.TVSHOW);
+                args.putString(Constans.CATEGORY_SELECTED_IN_DRAWER, Constans.POPULAR);
                 postersFragment.setArguments(args);
                 fr.beginTransaction()
                         .replace(R.id.content_main, postersFragment, "POSTERS_TAG")
@@ -136,7 +135,8 @@ public class MainActivity extends AppCompatActivity
                         .commit();
                 break;
             case R.id.nav_tvShow_toprated:
-                args.putString("selected_nav", API_URL_TVSHOW_TOP_RATED);
+                args.putString(Constans.MENU_ITEM_SELECTED_IN_DRAWER, Constans.TVSHOW);
+                args.putString(Constans.CATEGORY_SELECTED_IN_DRAWER, Constans.TOP_RATED);
                 postersFragment.setArguments(args);
                 fr.beginTransaction()
                         .replace(R.id.content_main, postersFragment, "POSTERS_TAG")

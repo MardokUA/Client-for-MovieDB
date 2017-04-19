@@ -29,20 +29,34 @@ import java.util.List;
 import laktionov.filmsraiting.BuildConfig;
 import laktionov.filmsraiting.R;
 import laktionov.filmsraiting.adapter.MovieListAdapter;
-import laktionov.filmsraiting.model.Poster;
+import laktionov.filmsraiting.extras.Constans;
+import laktionov.filmsraiting.rest.BaseApi;
+import laktionov.filmsraiting.rest.model.MovieResponse;
+import laktionov.filmsraiting.rest.model.Poster;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class PostersFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, AbsListView.OnScrollListener {
 
     private static final String TAG = "PostersFragment";
 
+    private Retrofit retrofit;
+    private BaseApi baseApi;
     private Integer currentPage = 1;
-    private String navItemSelected;
+    private String menuItemSelectedInDrawer;
+    private String category;
     private GridView lvPosters;
     private List<Poster> posterList;
     private MovieListAdapter movieListAdapter;
     private FloatingActionButton fab;
-    private String search;
+
+    private String searchingIn;
     private String request;
     private int total_pages;
     private int total_results;
@@ -54,13 +68,88 @@ public class PostersFragment extends Fragment implements View.OnClickListener, A
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        navItemSelected = getArguments().getString("selected_nav");
-        search = getArguments().getString("url");
-        request = getArguments().getString("request");
+
+        menuItemSelectedInDrawer = getArguments().getString(Constans.MENU_ITEM_SELECTED_IN_DRAWER);
+        category = getArguments().getString(Constans.CATEGORY_SELECTED_IN_DRAWER);
+
+        request = getArguments().getString(Constans.SEARCH_REQUEST);
+        searchingIn = getArguments().getString(Constans.SEARCHING_IN);
+
         movieListAdapter = new MovieListAdapter(getContext(), posterList);
 
-        new DownloadPostersAsyncTask().execute(currentPage);
+        //Logger for Retrofit
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BaseApi.API_URL_BASE)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+        baseApi = retrofit.create(BaseApi.class);
+
+        if (request != null) {
+            getSearchingFilmsPosters(currentPage);
+        } else {
+            getCategoryFilmsPosters(currentPage);
+        }
+
+    }
+
+    private void getSearchingFilmsPosters(Integer currentPage) {
+        Call<MovieResponse> getSearchingPoster;
+        getSearchingPoster = baseApi.searchFilms(searchingIn, String.valueOf(currentPage), request);
+        getSearchingPoster.enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                if (response.body().getTotal_results() == 0) {
+
+                    EmptyFragment emptyFragment = new EmptyFragment();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .remove(getFragmentManager().findFragmentById(R.id.content_main))
+                            .commit();
+
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.content_main, emptyFragment)
+                            .commit();
+
+                } else {
+                    total_pages = response.body().getTotal_pages();
+                    posterList.addAll(response.body().getPosterList());
+                    movieListAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void getCategoryFilmsPosters(Integer currentPage) {
+        Call<MovieResponse> getPosters = null;
+        switch (category) {
+            case Constans.POPULAR:
+                getPosters = baseApi.getPopular(menuItemSelectedInDrawer, String.valueOf(currentPage));
+                break;
+            case Constans.TOP_RATED:
+                getPosters = baseApi.getTopRated(menuItemSelectedInDrawer, String.valueOf(currentPage));
+                break;
+        }
+        getPosters.enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                posterList.addAll(response.body().getPosterList());
+                movieListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
@@ -73,12 +162,10 @@ public class PostersFragment extends Fragment implements View.OnClickListener, A
         fab.setEnabled(true);
         fab.setOnClickListener(this);
 
-
         lvPosters = (GridView) root.findViewById(R.id.lv_posters);
         lvPosters.setOnItemClickListener(this);
         lvPosters.setOnScrollListener(this);
         lvPosters.setAdapter(movieListAdapter);
-
 
         return root;
     }
@@ -122,16 +209,20 @@ public class PostersFragment extends Fragment implements View.OnClickListener, A
 
     @Override
     public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        Log.d(TAG, firstVisibleItem + " + " + visibleItemCount + " = " + totalItemCount);
-        if (firstVisibleItem + visibleItemCount == totalItemCount && firstVisibleItem != 0) {
+        if (firstVisibleItem + visibleItemCount == totalItemCount && firstVisibleItem != 0 && currentPage < total_pages) {
             currentPage++;
-            new DownloadPostersAsyncTask().execute(currentPage);
+            if (request != null) {
+                getSearchingFilmsPosters(currentPage);
+            } else {
+                getCategoryFilmsPosters(currentPage);
+            }
+
+//            new DownloadPostersAsyncTask().execute(currentPage);
         }
     }
 
     private class DownloadPostersAsyncTask extends AsyncTask<Integer, Poster, Void> {
 
-        private static final String API_URL_BASE = "https://api.themoviedb.org/3";
         private Gson gson;
 
         public DownloadPostersAsyncTask() {
@@ -144,10 +235,10 @@ public class PostersFragment extends Fragment implements View.OnClickListener, A
             for (Integer pageNumber : pages)
                 try {
                     URL url;
-                    if (search != null && request != null) {
-                        url = new URL(search + "&language=en-US&page=" + pageNumber + "?&query=" + request);
+                    if (searchingIn != null && request != null) {
+                        url = new URL(searchingIn + "&language=en-US&page=" + pageNumber + "?&query=" + request);
                     } else {
-                        url = new URL(API_URL_BASE + navItemSelected + "?api_key=" + BuildConfig.THE_MOVIEDB_API_KEY + "&language=en-US&page=" + pageNumber);
+                        url = new URL(BaseApi.API_URL_BASE + menuItemSelectedInDrawer + "?api_key=" + BuildConfig.THE_MOVIEDB_API_KEY + "&language=en-US&page=" + pageNumber);
                     }
                     JsonObject jsonObject = gson.fromJson(IOUtils.toString(url.openStream()), JsonObject.class);
 
@@ -161,7 +252,6 @@ public class PostersFragment extends Fragment implements View.OnClickListener, A
 
                     if (total_results == 0) {
                         EmptyFragment emptyFragment = new EmptyFragment();
-                        Log.d(TAG, "METHOD IN");
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .remove(getFragmentManager().findFragmentById(R.id.content_main))
                                 .commit();

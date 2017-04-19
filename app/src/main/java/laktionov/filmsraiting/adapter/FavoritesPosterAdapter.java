@@ -33,6 +33,7 @@ import laktionov.filmsraiting.fragment.MovieDetailsFragment;
 import laktionov.filmsraiting.fragment.TVShowDetailsFragment;
 import laktionov.filmsraiting.provider.FavoritesProvider;
 import laktionov.filmsraiting.provider.FilmsContract;
+import laktionov.filmsraiting.rest.BaseApi;
 
 public class FavoritesPosterAdapter extends CursorAdapter
         implements AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
@@ -82,7 +83,7 @@ public class FavoritesPosterAdapter extends CursorAdapter
         TextView tvFilmTitle = (TextView) convertView.findViewById(R.id.posters_list_item_tv_title);
 
 
-        String image_path = MovieListAdapter.API_URL_IMAGE + cursor.getString(cursor.getColumnIndex(
+        String image_path = BaseApi.API_URL_IMAGE + cursor.getString(cursor.getColumnIndex(
                 FilmsContract.Favorite.POSTER_PATH));
         Log.d(LOG_TAG,"IMAGE PATH" + image_path);
 

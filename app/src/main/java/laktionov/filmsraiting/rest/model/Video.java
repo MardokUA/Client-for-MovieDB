@@ -1,12 +1,19 @@
-package laktionov.filmsraiting.model;
+package laktionov.filmsraiting.rest.model;
 
+
+import com.google.gson.annotations.Expose;
 
 public class Video {
 
+    @Expose
     private String id;
+    @Expose
     private String iso_639_1;
+    @Expose
     private String iso_3166_1;
+    @Expose
     private String key;
+    @Expose
     private String name;
 
     public Video() {
