@@ -209,15 +209,13 @@ public class PostersFragment extends Fragment implements View.OnClickListener, A
 
     @Override
     public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        if (firstVisibleItem + visibleItemCount == totalItemCount && firstVisibleItem != 0 && currentPage < total_pages) {
+        if (firstVisibleItem + visibleItemCount == totalItemCount && firstVisibleItem != 0) {
             currentPage++;
             if (request != null) {
                 getSearchingFilmsPosters(currentPage);
             } else {
                 getCategoryFilmsPosters(currentPage);
             }
-
-//            new DownloadPostersAsyncTask().execute(currentPage);
         }
     }
 
